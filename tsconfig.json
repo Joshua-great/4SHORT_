@@ -1,0 +1,20 @@
+
+  {
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/views/**/*.hbs", // Add this line to include HBS files in the views directory
+    "src/qrcodegen",
+    "src/public" // Added per instructions
+  ],
+  "exclude": ["node_modules"]
+}
+  
