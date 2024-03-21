@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
-import { Request, Response } from 'express'; // Assuming you're using Express
-import User from '../models/User'; // Adjust the path as needed
+import { Request, Response } from 'express'; 
+import User from '../models/User'; 
 import logger from '../utils/logger';
 
 const createUser = async (userInfo: { email: any; first_name: any; last_name: any; password: any; }) => {

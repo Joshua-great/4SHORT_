@@ -16,6 +16,7 @@ router.get('/shorten', isAuthenticated, (req, res) => {
   res.render('shorten');
 });
 router.post('/shorten-url', urlController.shortenUrl);
+// router.post('/delete-url', urlController.deleteUrl);
 // Route for shortening URLs
 // router.post('/layout', urlController.shortenUrl);
 
@@ -26,6 +27,6 @@ router.post('/customize', urlController.customizeUrl);
 router.get('/generate-qr/:urlId', urlController.generateQRCode);
 
 // Route for analytics
-router.get('/analytics/:urlId', urlController.getAnalytics);
+router.get('/analytics', urlController.getAnalytics);
 
 export default router;

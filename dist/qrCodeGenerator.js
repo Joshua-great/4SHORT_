@@ -1,5 +1,4 @@
 "use strict";
-// qrCodeGenerator.js
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -14,15 +13,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const qrcode_1 = __importDefault(require("qrcode"));
-// Function to generate QR code and save it to a file
-function generateQRCode(text, filePath) {
+function generateQRCode(text) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield qrcode_1.default.toFile(filePath, text);
-            console.log('QR code generated successfully:', filePath);
+            // Generate QR code as a buffer
+            const qrCodeBuffer = yield qrcode_1.default.toBuffer(text);
+            return qrCodeBuffer;
         }
         catch (error) {
-            console.error('Error generating QR code:', error);
+            console.error("Error generating QR code:", error);
+            throw error;
         }
     });
 }

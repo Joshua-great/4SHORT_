@@ -16,7 +16,7 @@ exports.createUser = exports.login = void 0;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
-const User_1 = __importDefault(require("../models/User")); // Adjust the path as needed
+const User_1 = __importDefault(require("../models/User"));
 const logger_1 = __importDefault(require("../utils/logger"));
 const createUser = (userInfo) => __awaiter(void 0, void 0, void 0, function* () {
     try {

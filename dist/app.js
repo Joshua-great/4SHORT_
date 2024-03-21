@@ -28,17 +28,9 @@ app.set("views", viewsPath);
 const publicPath = path_1.default.join(__dirname, "../src/public");
 app.use(express_1.default.static(publicPath));
 console.log(`Public path: ${publicPath}`);
-// const imagesPath = path.join(__dirname, "../src/images");
-// app.use("/images", express.static(imagesPath));
-// const stylesPath = path.join(__dirname, "../src/styles");
-// app.use("/styles", express.static(stylesPath));
-// // // Check that imagesPath and stylesPath can be reached
-// console.log(`Images path: ${imagesPath}`);
-// console.log(`Styles path: ${stylesPath}`);
 // Routes
-app.use("/", authRoutes_1.default); // Use authRoutes for login and signup
-app.use("/", urlRoutes_1.default); // Use urlRoutes for URL-related paths
-// app.use('/auth', indexRouter);
+app.use("/", authRoutes_1.default);
+app.use("/", urlRoutes_1.default);
 app.use(express_1.default.Router());
 app.use(express_1.default.json());
 app.use(limiter);

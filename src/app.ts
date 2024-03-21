@@ -32,21 +32,12 @@ app.set("views", viewsPath);
 const publicPath = path.join(__dirname,"../src/public");
 app.use(express.static(publicPath));
 console.log(`Public path: ${publicPath}`);
-// const imagesPath = path.join(__dirname, "../src/images");
-// app.use("/images", express.static(imagesPath));
-
-// const stylesPath = path.join(__dirname, "../src/styles");
-// app.use("/styles", express.static(stylesPath));
-
-// // // Check that imagesPath and stylesPath can be reached
-// console.log(`Images path: ${imagesPath}`);
-// console.log(`Styles path: ${stylesPath}`);
 
 // Routes
-app.use("/", authRoutes); // Use authRoutes for login and signup
-app.use("/", urlRoutes); // Use urlRoutes for URL-related paths
+app.use("/", authRoutes); 
+app.use("/", urlRoutes); 
 
-// app.use('/auth', indexRouter);
+
 
 app.use(express.Router());
 app.use(express.json());

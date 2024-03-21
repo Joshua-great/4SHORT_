@@ -1,14 +1,13 @@
-// qrCodeGenerator.js
+import QRCode from "qrcode";
 
-
-import qr from 'qrcode';
-// Function to generate QR code and save it to a file
-async function generateQRCode(text: any, filePath: any) {
+async function generateQRCode(text: string): Promise<Buffer> {
   try {
-    await qr.toFile(filePath, text);
-    console.log('QR code generated successfully:', filePath);
+    // Generate QR code as a buffer
+    const qrCodeBuffer = await QRCode.toBuffer(text);
+    return qrCodeBuffer;
   } catch (error) {
-    console.error('Error generating QR code:', error);
+    console.error("Error generating QR code:", error);
+    throw error;
   }
 }
 

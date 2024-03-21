@@ -23,13 +23,7 @@
         <div class="shape shape3"></div>
         <div class="shape shape4"></div>
       </div>
-      {{#if shortUrl}}
-        <div class="alert alert-success mt-3" role="alert">
-          Your short URL is:
-          <a href="{{shortUrl}}" target="_blank">{{shortUrl}}</a>
-        </div>
-      {{/if}}
-
+     
       <form action="/shorten-url" id="shortenForm" method="POST" class="mt-3">
         <div class="form-group">
           <label class="Enter_url" for="originalUrl">Enter your URL:</label>
@@ -38,121 +32,89 @@
             placeholder="Enter the link to be short"
             name="originalUrl"
             id="originalUrl"
-            class="form-control"
+           
             required
           />
         </div>
-        <button type="submit" class="btn btn-primary">Shorten URL</button>
+        <button type="submit" >Shorten URL</button>
       </form>
-      <!-- History table -->
-    <table id="historyTable">
-      <thead>
-        <tr>
-          <th>Original URL</th>
-          <th>Shortened URL</th>
-          <th>Clicks</th>
-          <th>QR Code</th>
-          <th>Download QR</th>
-          <!-- Add more headers if needed -->
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Render history table rows dynamically using server-side data -->
-        {{#each urlHistory}}
-        <tr>
-          <td>{{this.originalUrl}}</td>
-          <td>{{this.shortUrl}}</td>
-          <td>{{this.clicks}}</td>
-            <td>
-      <!-- Display QR code -->
-      <canvas class="qr-code" data-url="{{this.shortUrl}}"></canvas>
-    </td>
-    <td>
-      <!-- Download QR code button -->
-      <button class="download-btn" data-url="{{this.shortUrl}}">Download QR</button>
-    </td>
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
-</main>
-<script src="../qrCodeGenerator.ts"></script>
- <script>
-document.addEventListener('DOMContentLoaded', () => {
-    // Function to generate and display QR code
-    function generateQRCode(url, qrCodeElement) {
-        // Generate QR code using a QR code library (e.g., qrcode.js)
-        qrcode.toCanvas(qrCodeElement, url);
-    }
 
-    // Event listener for form submission
-    document.getElementById('shortenForm').addEventListener('submit', async (event) => {
+      <div id="shortenedUrl"></div>
+      
+      <!-- Analytics section -->
+      <div id="analytics" class="mt-3 analytics">
+        <h2 class="analytics h2">URL Analytics</h2>
+        <p>Total Clicks: <span id="totalClicks">0</span></p>
+        <h3 class="analytics h3">Location Click Percentage:</h3>
+        <ul id="locationPercentage">
+      </div>
+      
+      <!-- History table -->
+      <table id="historyTable">
+        <thead>
+          <tr>
+            <th>Original URL</th>
+            <th>Shortened URL</th>
+            <th>Clicks</th>
+            <th>QR Code</th>
+            <th>Download QR</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </main>
+    
+    <script>
+      document.getElementById('shortenForm').addEventListener('submit', async (event) => {
         event.preventDefault();
         
         const form = event.target;
         const originalUrl = form.elements.originalUrl.value;
-
+    
         try {
-            const response = await fetch('/shorten-url', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ originalUrl })
-            });
+          const response = await fetch('/shorten-url', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ originalUrl })  
+          });
+    
+          if (response.ok) {
             const data = await response.json();
-
-            // Display an alert with the shortened URL
-            alert('Shortened URL: ' + data.shortUrl);
-
-            // Add the shortened URL to the history table
-            const tableBody = document.querySelector('#historyTable tbody');
-            const newRow = tableBody.insertRow();
-            newRow.innerHTML = `
-                <td>${originalUrl}</td>
-                <td>${data.shortUrl}</td>
-                <td>0</td>
-                <td><canvas class="qr-code" data-url="${data.shortUrl}"></canvas></td>
-                <td><button class="download-btn" data-url="${data.shortUrl}">Download</button></td>
-            `;
-
-            // Generate QR code for the shortened URL
-            const qrCodeCanvas = newRow.querySelector('.qr-code');
-            generateQRCode(data.shortUrl, qrCodeCanvas);
+            
+            // Display success alert
+            document.getElementById('shortenedUrl').innerHTML = 
+              `<div class="alert alert-success">
+                Shortened URL: <a href="${data.shortUrl}" target="_blank">${data.shortUrl}</a>  
+              </div>`;
+              
+            // Add to history table
+            addToHistoryTable(originalUrl, data.shortUrl);
+            
+            // Update analytics
+            updateAnalytics();
+          } else {
+            throw new Error('Failed to shorten URL');
+          }
+          
         } catch (error) {
-            console.error(error);
-            alert('An error occurred. Please try again.');
+          console.error(error);
+          alert('An error occurred. Please try again.');
         }
-    });
-
-    // Function to download QR code
-    function downloadQRCode(qrCodeCanvas, filename) {
-        // Convert canvas to blob
-        qrCodeCanvas.toBlob(blob => {
-            // Create a temporary link element
-            const link = document.createElement('a');
-            link.download = filename;
-            link.href = URL.createObjectURL(blob);
-
-            // Trigger the download
-            link.click();
-
-            // Clean up
-            URL.revokeObjectURL(link.href);
-        });
-    }
-
-    // Event listener for download QR code button
-    document.querySelectorAll('.download-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const shortUrl = button.dataset.url;
-            const qrCodeCanvas = button.parentElement.previousElementSibling.querySelector('.qr-code');
-            downloadQRCode(qrCodeCanvas, 'qr_code.png');
-        });
-    });
-});
-
-</script>
-
+      });
+      
+      async function addToHistoryTable(originalUrl, shortUrl) {
+        // Add row to table
+      }
+      
+      async function updateAnalytics() {
+        // Update analytics
+      }
+      
+    </script>
   </body>
 </html>
+
